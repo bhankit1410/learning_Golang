@@ -1,2 +1,2 @@
 # learning_Golang
-slides and assignments from all 3 courses for the specialization : [coursera](https://www.coursera.org/programs/ericsson-lg-learning-program-jh3ok/browse?query=Programming+with+Google+Go)
+slides and assignments from all 3 courses for the specialization : coursera

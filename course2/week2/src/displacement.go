@@ -6,7 +6,7 @@ import (
 
 func GenDisplaceFn(a, vo, so float64) func(t float64) float64 {
 	fn := func(t float64) float64 {
-		return so + vo*t + ((0.5) * t * a * a)
+		return so + vo*t + ((0.5) * t * t * a)
 	}
 	return fn
 }
