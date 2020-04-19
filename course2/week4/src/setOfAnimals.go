@@ -7,102 +7,106 @@ import (
 	"strings"
 )
 
+// Animal defines the behaviors
 type Animal interface {
 	Eat()
 	Move()
 	Speak()
 }
 
-type Bird struct {
-	name       string
-	food       string
-	locomotion string
-	noise      string
-}
+// Cow is one specified animal
 type Cow struct {
-	name       string
-	food       string
-	locomotion string
-	noise      string
-}
-type Snake struct {
-	name       string
-	food       string
-	locomotion string
-	noise      string
 }
 
+// Eat is how a cow eat
 func (a Cow) Eat() {
-	fmt.Printf("%s \n", a.food)
+	fmt.Println("grass")
 }
+
+// Move is how a cow move
 func (a Cow) Move() {
-	fmt.Printf("%s \n", a.locomotion)
+	fmt.Println("walk")
 }
+
+// Speak is how a cow speak
 func (a Cow) Speak() {
-	fmt.Printf("%s \n", a.noise)
+	fmt.Println("moo")
 }
+
+// Bird is one specified animal
+type Bird struct {
+}
+
+// Eat is how a bird eat
 func (a Bird) Eat() {
-	fmt.Printf("%s \n", a.food)
+	fmt.Println("worms")
 }
+
+// Move is how a bird move
 func (a Bird) Move() {
-	fmt.Printf("%s \n", a.locomotion)
+	fmt.Println("fly")
 }
+
+// Speak is how a bird speak
 func (a Bird) Speak() {
-	fmt.Printf("%s \n", a.noise)
+	fmt.Println("peep")
 }
+
+// Snake is one specified animal
+type Snake struct {
+}
+
+// Eat is how a snake eat
 func (a Snake) Eat() {
-	fmt.Printf("%s \n", a.food)
+	fmt.Println("mice")
 }
+
+// Move is how a snake move
 func (a Snake) Move() {
-	fmt.Printf("%s \n", a.locomotion)
+	fmt.Println("slither")
 }
+
+// Speak is how a snake speak
 func (a Snake) Speak() {
-	fmt.Printf("%s \n", a.noise)
+	fmt.Println("hsss")
 }
 
 func main() {
-	i := 2
-	for i > 0 {
-		var inputLine string
-		fmt.Printf(">")
-		// fmt.Scan(&inputLine)
-		reader := bufio.NewReader(os.Stdin)
-		inputLine, errName := reader.ReadString('\n')
-		var requestType, name, animal string
-		if errName == nil && len(strings.SplitAfter(inputLine, " ")) > 2 {
-			requestType, name, animal = strings.ToLower(strings.SplitAfter(inputLine, " ")[0]), strings.ToLower(strings.SplitAfter(inputLine, " ")[1]), strings.ToLower(strings.SplitAfter(inputLine, " ")[2])
-		}
-		if strings.TrimSpace(requestType) == "newanimal" {
-			if strings.TrimSpace(animal) == "cow" {
-				var a1 Animal
-				var c1 Cow
-				c1.name = name
-				a1 = c1
-				fmt.Printf("created it")
+	reader := bufio.NewReader(os.Stdin)
+	animals := make(map[string]Animal)
 
-			} else if strings.TrimSpace(animal) == "bird" {
-				var a1 Animal
-				var c1 Bird
-				c1.name = name
-				a1 = c1
-				fmt.Printf("created it")
+	for {
+		fmt.Print("> ")
+		input, _ := reader.ReadString('\n')
+		s := strings.Split(strings.TrimSpace(input), " ")
 
-			} else if strings.TrimSpace(animal) == "snake" {
-				var a1 Animal
-				var c1 Snake
-				c1.name = name
-				a1 = c1
-				fmt.Printf("created it")
-
+		switch s[0] {
+		case "newanimal":
+			switch s[2] {
+			case "cow":
+				animals[s[1]] = new(Cow)
+			case "bird":
+				animals[s[1]] = new(Bird)
+			case "snake":
+				animals[s[1]] = new(Snake)
 			}
 
-		} else if strings.TrimSpace(requestType) == "query" {
-			if strings.TrimSpace(animal) == "eat" {
-				fmt.Printf(Animal.Eat())
-			}
+			fmt.Println("Created it!")
+		case "query":
+			a, ok := animals[s[1]]
 
-		} else {
-			fmt.Printf("format incorrect: correct format is >query/newanimal name animal \n")
+			if ok {
+				switch s[2] {
+				case "eat":
+					a.Eat()
+				case "move":
+					a.Move()
+				case "speak":
+					a.Speak()
+				}
+			} else {
+				fmt.Println("Not found!")
+			}
 		}
 
 	}
