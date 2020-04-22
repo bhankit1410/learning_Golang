@@ -6,6 +6,22 @@ import (
 	"time"
 )
 
+func foo(a *int, w *sync.WaitGroup) {
+	for j := 0; j < 10; j++ {
+		/*
+			the a++ would be interperate a = a + 1
+			since interleaving is totally random, the read and set opeartion cannot be predicted the sequence
+			in different goroutines.
+			so if the value was read this in this goroutines and at the same time changed in other goroutine
+			the later assignment operation would overwrite the value set in other goroutine
+		*/
+		*a++
+		time.Sleep(10 * time.Millisecond)
+	}
+
+	w.Done()
+}
+
 func main() {
 	a := 0
 	var w sync.WaitGroup
@@ -15,21 +31,7 @@ func main() {
 		 setup two goroutines and run simultaneously
 		*/
 		w.Add(1)
-		go func() {
-			for j := 0; j < 1000; j++ {
-				/*
-					the a++ would be interperate a = a + 1
-					since interleaving is totally random, the read and set opeartion cannot be predicted the sequence
-					in different goroutines.
-					so if the value was read this in this goroutines and at the same time changed in other goroutine
-					the later assignment operation would overwrite the value set in other goroutine
-				*/
-				a++
-				time.Sleep(1 * time.Millisecond)
-			}
-
-			w.Done()
-		}()
+		go foo(&a, &w)
 	}
 
 	// wait for the two goroutines finish
