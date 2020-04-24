@@ -19,7 +19,7 @@ var pool = sync.Pool{
 }
 
 var w sync.WaitGroup
-
+// var wg sync.
 func (p Philosopher) eat(ch chan int) {
 	
 	<-ch
