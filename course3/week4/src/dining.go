@@ -5,9 +5,11 @@ import (
 	"sync"
 )
 
+//Chopstick is 
 type Chopstick struct {
 }
 
+//Philosopher is
 type Philosopher struct {
 	num int
 }
